@@ -1,0 +1,13 @@
+REDIS_PUBLIC_URL = ""
+REDIS_PRIVATE_URL = ""
+REDIS_PORT = 10525
+INDEX_NAME = "arxiv_index"
+
+REDIS_PASSWORD = ""
+REDIS_USERNAME = "default"
+
+VECTOR_NAME = "vector"
+VECTOR_TYPE = "FLOAT32"
+VECTOR_DIM = 768
+
+EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
