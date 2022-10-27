@@ -11,6 +11,6 @@ EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
 
 GCS_TOKEN_FILE = ""
 GCS_PROJECT = ""
-REDIS_PASSWORD = "atYyHBBHijkK6q18Y9BCPCYDJVEZG4PO"
+REDIS_PASSWORD = ""
 REDIS_USERNAME = "default"
 
