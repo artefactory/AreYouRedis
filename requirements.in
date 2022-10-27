@@ -11,8 +11,7 @@ uvicorn
 aiofiles
 redis-om
 pandas
-spacy
 sentence-transformers
-pyarrow
-fastparquet
+gcsfs
+dateutil
 #prod
