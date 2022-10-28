@@ -7,6 +7,7 @@ import config
 import gcsfs
 import sentence_transformers
 from tqdm import tqdm
+from categories import _map
 from sentence_transformers import SentenceTransformer
 
 
@@ -45,19 +46,28 @@ def read_pandas_json_from_gcs(link: str):
     return pd.read_json(link, storage_options={"token": config.GCS_TOKEN_FILE})
 
 
+def map_categories_to_value(categories: pd.Series):
+    mapping = {key.lower(): value.lower() for key, value in _map.items()}
+    categories = categories.str.lower()
+    return categories.replace(mapping)
+
+
 def add_missing_columns_to_embedding_file(
-        embeddings_path: str = "./embeddings_100000.json",
+        embeddings_path: str = "./arxiv_embeddings_300000.json",
         raw_data_path: str = "./arxiv-metadata-oai-snapshot.json",
-        save_to: str = "./embeddings_100000_completed.json",
-        sample_raw_data: int = 1500000
+        save_to: str = "./arxiv_embeddings_300000_completed.json",
+        sample_raw_data: int = None
 
 ):
     embeddings = pd.read_json(embeddings_path)
+    embeddings.categories = map_categories_to_value(embeddings.categories)
+
     raw_data = load_raw_data(raw_data_path)
     raw_data = pd.DataFrame.from_records(raw_data)
-    raw_data = raw_data.loc[:sample_raw_data]
-    raw_data.id = raw_data.id.astype("float64")
+    if sample_raw_data:
+        raw_data = raw_data.loc[:sample_raw_data]
     raw_data = raw_data[['id']+list(set(raw_data.columns) - set(embeddings.columns))]
+
     data = pd.merge(embeddings, raw_data, on="id", how="inner")
     data = data.fillna("None")
     data.to_json(save_to)

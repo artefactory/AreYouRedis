@@ -158,7 +158,7 @@ async def create_hnsw_index(
     await create_index(redis_conn, prefix, vector_field)
 
 
-def upload_vectors_to_redis(path: str = "./embeddings_100000_completed.json"):
+def upload_vectors_to_redis(path: str = "./arxiv_embeddings_300000_completed.json"):
     papers_df = pd.read_json(path)
     conn = get_redis_connexion()
     for col in papers_df.columns:
@@ -242,13 +242,16 @@ async def find_similar_papers_given_user_text(
 
 # if __name__ == "__main__":
 #
-#     r_conn = get_redis_connexion()
-#     # q = create_query()
-#     q = create_query(tag_dict={"year": ["2007", "2008", "2009", "2010"]})
-#
-#     # res = asyncio.run(find_similar_papers_given_id(r_conn, "711.187", q))
-#     res = asyncio.run(find_similar_papers_given_user_text(
-#         redis_conn=r_conn,
-#         user_text="An article about computer science",
-#         query=q
-#     ))
+#     upload_vectors_to_redis()
+
+    # r_conn = get_redis_connexion()
+    # # q = create_query()
+    # q = create_query(tag_dict={"year": ["2007", "2008", "2009", "2010"]})
+    #
+    # # res = asyncio.run(find_similar_papers_given_id(r_conn, "711.187", q))
+    # res = asyncio.run(find_similar_papers_given_user_text(
+    #     redis_conn=r_conn,
+    #     user_text="An article about computer science",
+    #     query=q
+    # ))
+
