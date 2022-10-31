@@ -12,5 +12,5 @@ aiofiles
 redis-om
 pandas
 sentence-transformers
-gcsfs
+networkx
 python-dateutil
