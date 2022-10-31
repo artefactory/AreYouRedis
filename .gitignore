@@ -87,3 +87,9 @@ target/
 
 # Mypy cache
 .mypy_cache/
+
+# VScode
+.vscode/
+
+# dataset uploaded to redis DB
+src/arxiv_embeddings_300000_completed.json
