@@ -207,23 +207,6 @@ async def papers_from_results(results) -> list:
     return [await process_paper(p) for p in results.docs]
 
 
-async def find_similar_papers_given_id(
-        redis_conn: Redis,
-        paper_id: str,
-        query: Query
-):
-    # find the vector of the Paper listed in the request
-    paper_vector_key = "paper_vector:" + paper_id
-    vector = await redis_conn.hget(paper_vector_key, "vector")
-    # Execute query
-    # noinspection PyUnresolvedReferences
-    results = await redis_conn.ft(config.INDEX_NAME).search(
-        query,
-        query_params={"vec_param": vector}
-    )
-    return await papers_from_results(results)
-
-
 async def find_similar_papers_given_user_text(
         redis_conn: Redis,
         user_text: str,
@@ -237,21 +220,34 @@ async def find_similar_papers_given_user_text(
             "vec_param": create_embedding(user_text).tobytes()
         }
     )
-    return await papers_from_results(results)
+
+    results = results.docs
+    clean_score = [1 - float(doc.vector_score) for doc in results]
+    processed_results = [await redis_conn.hgetall(doc.id) for doc in results]
+    processed_results = [
+        {try_decode_bytes(key): try_decode_bytes(value) for key, value in obj.items()}
+        for obj in processed_results
+    ]
+    for p, score in zip(processed_results, clean_score):
+        p.update({"similarity_score": score})
+
+    return processed_results
 
 
-# if __name__ == "__main__":
-#
-#     upload_vectors_to_redis()
+def try_decode_bytes(data: bytes):
+    try:
+        decoded = data.decode()
+    except UnicodeDecodeError:
+        decoded = data
+    return decoded
 
-    # r_conn = get_redis_connexion()
-    # # q = create_query()
-    # q = create_query(tag_dict={"year": ["2007", "2008", "2009", "2010"]})
-    #
-    # # res = asyncio.run(find_similar_papers_given_id(r_conn, "711.187", q))
-    # res = asyncio.run(find_similar_papers_given_user_text(
-    #     redis_conn=r_conn,
-    #     user_text="An article about computer science",
-    #     query=q
-    # ))
 
+def execute_user_query_example():
+    r_conn = get_redis_connexion()
+    q = create_query()
+    result = asyncio.run(find_similar_papers_given_user_text(
+        redis_conn=r_conn,
+        user_text="machine learning model observability",
+        query=q
+    ))
+    return result
