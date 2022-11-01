@@ -3,13 +3,13 @@ import json
 import pickle
 import string
 import pandas as pd
-import config
+import src.config as config
 import itertools
 # import networkx as nx
 import sentence_transformers
 # import matplotlib.pyplot as plt
 from tqdm import tqdm
-from categories import _map
+from src.categories import _map
 from typing import List
 from sentence_transformers import SentenceTransformer
 tqdm.pandas()

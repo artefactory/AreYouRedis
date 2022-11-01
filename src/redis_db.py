@@ -1,10 +1,15 @@
-import config
+import src.config as config
 import asyncio
 import numpy as np
 import pandas as pd
+
+# Set new event loop
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
+
 from dateutil import parser
 from typing import List, Dict
-from vectors import create_embedding
+from src.vectors import create_embedding
 from redis.asyncio import Redis
 from redis.commands.search.query import Query
 from redis.commands.search.field import VectorField, TagField
@@ -241,3 +246,4 @@ def execute_user_query_example():
 
 if __name__ == "__main__":
     print(execute_user_query_example())
+

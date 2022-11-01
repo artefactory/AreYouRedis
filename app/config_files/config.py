@@ -15,7 +15,9 @@ STYLE_FILE_PATH = os.path.join(BASE_PATH, "style", "style.css")
 # Session state variables dict with default values
 default_val_session_state_vars_dict = {
     # --- Widgets' variables to be persisted --- #
-    'selected_page': 'page example',
+    'selected_page': 'Page example',
+    'user_search_query': '',
+    'user_search_query_results': []
 }
 
 
