@@ -14,11 +14,7 @@ from redis.asyncio import Redis
 from redis.commands.search.query import Query
 from redis.commands.search.field import VectorField, TagField
 from redis.commands.search.indexDefinition import IndexDefinition, IndexType
-from aredis_om import (
-    Field,
-    HashModel
-)
-from models import Paper
+from src.models import Paper
 
 
 async def gather_with_concurrency(n, redis_conn, *papers):
@@ -174,7 +170,7 @@ def format_tags(tag_dict: Dict[str, List[str]]):
 
 
 def create_query(
-    tag_dict:  Dict[str, List[str]] = None,
+    tag_dict: Dict[str, List[str]] = None,
     search_type: str = "KNN",
     number_of_results: int = 15,
 ) -> Query:
@@ -234,6 +230,17 @@ def try_decode_bytes(data: bytes):
     return decoded
 
 
+def execute_user_query(user_text):
+    r_conn = get_redis_connexion()
+    q = create_query()
+    result = asyncio.run(find_similar_papers_given_user_text(
+        redis_conn=r_conn,
+        user_text=user_text,
+        query=q
+    ))
+    return result
+
+
 def execute_user_query_example():
     r_conn = get_redis_connexion()
     q = create_query()
@@ -244,6 +251,6 @@ def execute_user_query_example():
     ))
     return result
 
-if __name__ == "__main__":
-    print(execute_user_query_example())
 
+if __name__ == "__main__":
+    pass

@@ -1,3 +1,5 @@
+import os
+
 REDIS_PUBLIC_URL = "redis-10525.c21908.eu-west1-2.gcp.cloud.rlrcp.com"
 REDIS_PORT = 10525
 
@@ -11,5 +13,5 @@ EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
 
 GCS_TOKEN_FILE = ""
 GCS_PROJECT = ""
-REDIS_PASSWORD = ""
+REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD", "")
 REDIS_USERNAME = "default"
