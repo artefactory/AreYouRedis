@@ -1,10 +1,15 @@
-import config
+import src.config as config
 import asyncio
 import numpy as np
 import pandas as pd
+
+# Set new event loop
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
+
 from dateutil import parser
 from typing import List, Dict
-from vectors import create_embedding
+from src.vectors import create_embedding
 from redis.asyncio import Redis
 from redis.commands.search.query import Query
 from redis.commands.search.field import VectorField, TagField
@@ -251,3 +256,18 @@ def execute_user_query_example():
         query=q
     ))
     return result
+
+
+def execute_user_query(user_text):
+    r_conn = get_redis_connexion()
+    q = create_query()
+    result = asyncio.run(find_similar_papers_given_user_text(
+        redis_conn=r_conn,
+        user_text=user_text,
+        query=q
+    ))
+    return result
+
+
+if __name__ == "__main__":
+    pass
