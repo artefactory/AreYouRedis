@@ -14,7 +14,7 @@ from redis.asyncio import Redis
 from redis.commands.search.query import Query
 from redis.commands.search.field import VectorField, TagField
 from redis.commands.search.indexDefinition import IndexDefinition, IndexType
-from models import Paper
+from src.models import Paper
 
 
 async def gather_with_concurrency(n, redis_conn, *papers):
