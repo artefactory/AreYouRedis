@@ -5,10 +5,9 @@ import string
 import pandas as pd
 import src.config as config
 import itertools
-import networkx as nx
+# import networkx as nx
 import sentence_transformers
-import matplotlib.pyplot as plt
-
+# import matplotlib.pyplot as plt
 from tqdm import tqdm
 from src.categories import _map
 from typing import List
@@ -156,45 +155,45 @@ def get_top_collab(weighted_edges: List, author: str, sample: int = 3):
     return focus[:sample]
 
 
-def get_authors_edges(
-        weighted_edges: List,
-        author: str,
-        sample: int = 3,
-        make_graph: bool = True
-):
+# def get_authors_edges(
+#         weighted_edges: List,
+#         author: str,
+#         sample: int = 3,
+#         make_graph: bool = True
+# ):
 
-    """
-    1 - get top 3 biggest collaborators of the actual author
-    2 - for each of the collaborators, get the top 3 of their collaborators
-    3 - add the duos + score as edge to a nx graph
-    4 - make the graph
-    """
+#     """
+#     1 - get top 3 biggest collaborators of the actual author
+#     2 - for each of the collaborators, get the top 3 of their collaborators
+#     3 - add the duos + score as edge to a nx graph
+#     4 - make the graph
+#     """
 
-    author = author.lower()
-    top_collab = get_top_collab(weighted_edges, author, sample)
-    collaborators = [item for sublist in top_collab
-                     for item in sublist
-                     if not isinstance(item, int)
-                     and item != author]
-    for coll in collaborators:
-        top_collab += get_top_collab(weighted_edges, coll, sample)
+#     author = author.lower()
+#     top_collab = get_top_collab(weighted_edges, author, sample)
+#     collaborators = [item for sublist in top_collab
+#                      for item in sublist
+#                      if not isinstance(item, int)
+#                      and item != author]
+#     for coll in collaborators:
+#         top_collab += get_top_collab(weighted_edges, coll, sample)
 
-    top_collab = [tuple([capitalize(x) for x in sub]) for sub in top_collab]
-    if make_graph:
-        g = nx.Graph()
-        g.add_weighted_edges_from(top_collab)
-        return top_collab, g
+#     top_collab = [tuple([capitalize(x) for x in sub]) for sub in top_collab]
+#     if make_graph:
+#         g = nx.Graph()
+#         g.add_weighted_edges_from(top_collab)
+#         return top_collab, g
 
-    return top_collab, None
+#     return top_collab, None
 
 
-def plot_graph(g, node: str):
-    pos = nx.spring_layout(g, scale=10)
-    nx.draw_networkx(g, pos=pos, font_size=16, node_color='white',
-                     font_color='black', alpha=.5)
-    nx.draw_networkx(g.subgraph(node), pos=pos, font_size=16,
-                     node_color='white', font_color='green', alpha=.5)
-    plt.show()
+# def plot_graph(g, node: str):
+#     pos = nx.spring_layout(g, scale=10)
+#     nx.draw_networkx(g, pos=pos, font_size=16, node_color='white',
+#                      font_color='black', alpha=.5)
+#     nx.draw_networkx(g.subgraph(node), pos=pos, font_size=16,
+#                      node_color='white', font_color='green', alpha=.5)
+#     plt.show()
 
 # if __name__ == "__main__":
 #

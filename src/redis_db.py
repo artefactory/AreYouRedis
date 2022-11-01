@@ -18,20 +18,7 @@ from aredis_om import (
     Field,
     HashModel
 )
-
-
-class Paper(HashModel):
-    id: str
-    submitter: str
-    authors: str
-    doi: str
-    categories: str
-    year: str
-    versions: str
-    license: str
-    update_date: str
-    title: str = Field(index=True, full_text_search=True)
-    abstract: str = Field(index=True, full_text_search=True)
+from models import Paper
 
 
 async def gather_with_concurrency(n, redis_conn, *papers):
@@ -257,17 +244,6 @@ def execute_user_query_example():
     ))
     return result
 
-
-def execute_user_query(user_text):
-    r_conn = get_redis_connexion()
-    q = create_query()
-    result = asyncio.run(find_similar_papers_given_user_text(
-        redis_conn=r_conn,
-        user_text=user_text,
-        query=q
-    ))
-    return result
-
-
 if __name__ == "__main__":
-    pass
+    print(execute_user_query_example())
+
