@@ -13,20 +13,7 @@ from aredis_om import (
     Field,
     HashModel
 )
-
-
-class Paper(HashModel):
-    id: str
-    submitter: str
-    authors: str
-    doi: str
-    categories: str
-    year: str
-    versions: str
-    license: str
-    update_date: str
-    title: str = Field(index=True, full_text_search=True)
-    abstract: str = Field(index=True, full_text_search=True)
+from models import Paper
 
 
 async def gather_with_concurrency(n, redis_conn, *papers):
@@ -251,3 +238,6 @@ def execute_user_query_example():
         query=q
     ))
     return result
+
+if __name__ == "__main__":
+    print(execute_user_query_example())

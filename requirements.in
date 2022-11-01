@@ -13,4 +13,5 @@ redis-om
 pandas
 sentence-transformers
 networkx
+matplotlib
 python-dateutil
