@@ -14,3 +14,4 @@ pandas
 sentence-transformers
 networkx
 python-dateutil
+matplotlib

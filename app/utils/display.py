@@ -1,6 +1,6 @@
 import streamlit as st
 
-from config import (
+from config_files import (
     config
 )
 from utils.load_css import (
@@ -22,7 +22,7 @@ def display_main_title():
     Display main title.
     """
     st.markdown(
-        "<h2 style='text-align: center; color: #ff0066; '>Trend spotter</h2>",
+        "<h2 style='text-align: center; color: #ff0066; '>Redis Search</h2>",
         unsafe_allow_html=True
     )
 

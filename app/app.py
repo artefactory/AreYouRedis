@@ -5,10 +5,11 @@ from utils.display import (
     display_main_title,
     display_section_title
 )
-from config import (
+from config_files import (
     config
 )
 import page_example
+import paper_search
 from utils.widgets import update_session_state_var
 
 
@@ -30,7 +31,8 @@ def main():
 
     # --- Variables --- #
     PAGES = {
-        "page example": page_example
+        "Page example": page_example,
+        "Paper search": paper_search
     }
 
     # --- Sidebar --- #
