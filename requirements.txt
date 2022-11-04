@@ -173,6 +173,8 @@ pillow==9.3.0
     #   matplotlib
     #   streamlit
     #   torchvision
+plotly==5.11.0
+    # via -r requirements.in
 pptree==3.1
     # via redis-om
 prompt-toolkit==3.0.31
@@ -266,6 +268,8 @@ stack-data==0.6.0
     # via ipython
 streamlit==1.14.0
     # via -r requirements.in
+tenacity==8.1.0
+    # via plotly
 threadpoolctl==3.1.0
     # via scikit-learn
 tokenizers==0.13.1
