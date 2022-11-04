@@ -12,8 +12,15 @@ def display_logo():
     """
     Display logo.
     """
-    st.image(
-        image=config.LOGO_PATH
+    _, redis_logo_col, _, artefact_logo_col, _, saturn_logo_col, _ = st.columns(7)
+    artefact_logo_col.image(
+        image=config.ARTEFACT_LOGO_PATH
+    )
+    redis_logo_col.image(
+        image=config.REDIS_LOGO_PATH
+    )
+    saturn_logo_col.image(
+        image=config.SATURN_LOGO_PATH
     )
 
 
@@ -22,7 +29,7 @@ def display_main_title():
     Display main title.
     """
     st.markdown(
-        "<h2 style='text-align: center; color: #ff0066; '>Redis Search</h2>",
+        "<h1 style='text-align: center; color: #49b6c2; '>Darwinian Paper Explorer</h1>",
         unsafe_allow_html=True
     )
 
@@ -46,3 +53,12 @@ def display_section_title(title, type):
             "<div class='atf-red'>" + title + "</div>",
             style_class='atf-red-header'
         ), unsafe_allow_html=True)
+
+
+def remove_paddings_top():
+    """
+    Remove padding at the top of the page (sidebar and page).
+    """
+    st.write('<style>div.block-container{padding-top:2rem;}</style>', unsafe_allow_html=True)
+    st.write('<style>div.block-container{padding-bottom:2rem;}</style>', unsafe_allow_html=True)
+    st.write('<style>.css-hxt7ib{padding-top:2rem;}</style>', unsafe_allow_html=True)

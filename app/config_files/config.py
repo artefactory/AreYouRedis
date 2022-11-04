@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import datetime
 
 from utils.load_css import (
     local_css
@@ -7,7 +8,9 @@ from utils.load_css import (
 
 
 BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-LOGO_PATH = os.path.join(BASE_PATH, "style", "Artefact_logo.png")
+ARTEFACT_LOGO_PATH = os.path.join(BASE_PATH, "style", "Artefact_logo.png")
+REDIS_LOGO_PATH = os.path.join(BASE_PATH, "style", "Redis_logo.png")
+SATURN_LOGO_PATH = os.path.join(BASE_PATH, "style", "Saturncloud_logo.webp")
 SMALL_LOGO_PATH = os.path.join(BASE_PATH, "style", "Artefact_small_logo.jpeg")
 STYLE_FILE_PATH = os.path.join(BASE_PATH, "style", "style.css")
 
@@ -17,7 +20,15 @@ default_val_session_state_vars_dict = {
     # --- Widgets' variables to be persisted --- #
     'selected_page': 'Page example',
     'user_search_query': '',
-    'user_search_query_results': []
+    'user_search_query_results': [],
+    'k_similar': 30,
+    'year_min': 2000,
+    'year_max': datetime.datetime.now().year,
+    'categories': []
+}
+
+arxiv_categories_mapping = {
+    'Machine learning': "cs\\.lg"
 }
 
 

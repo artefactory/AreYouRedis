@@ -3,6 +3,7 @@ from aredis_om import (
     HashModel
 )
 
+
 class Paper(HashModel):
     id: str
     submitter: str

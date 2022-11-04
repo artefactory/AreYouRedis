@@ -230,9 +230,18 @@ def try_decode_bytes(data: bytes):
     return decoded
 
 
-def execute_user_query(user_text):
+def execute_user_query(user_text, k, year_min, year_max, categories=[]):
     r_conn = get_redis_connexion()
-    q = create_query()
+    filters_dict = {
+        'year': [str(year) for year in range(year_min, year_max, 1)]
+    }
+    if len(categories) > 0:
+        filters_dict['categories'] = categories
+
+    q = create_query(
+        tag_dict=filters_dict,
+        number_of_results=k
+    )
     result = asyncio.run(find_similar_papers_given_user_text(
         redis_conn=r_conn,
         user_text=user_text,
