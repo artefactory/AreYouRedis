@@ -95,64 +95,64 @@ def create_embedding(
     return embedding
 
 
-def clean_authors_parsed(authors_parsed_list: List[List[str]]):
-    res = []
-    for sublist in authors_parsed_list:
-        authors = " ".join(sublist).strip().lower()
-        authors = re.sub(' +', ' ', authors)
-        res.append(authors)
-    return res
-
-
-def capitalize(obj: any):
-    try:
-        obj = obj.title()
-        return obj
-    except AttributeError:
-        return obj
-
-
-def get_all_authors_edges(data_path: str = "./arxiv_embeddings_300000_completed.json"):
-
-    """
-    1 - Get paper authors name from authors_parsed_column
-    2 - Compute all combinations (duos) of authors on the paper (each author has published with all others)
-    3 - Count each duo occurrence as score - (to evolve)
-    4 - return flattened duos + score list as weighted edge for nx
-    """
-
-    data = pd.read_json(data_path)
-    authors_parsed = data.authors_parsed
-    del data
-    combinations = []
-
-    for val in tqdm(authors_parsed):
-        cleaned_val = clean_authors_parsed(val)
-        if len(cleaned_val) > 1:
-            combi = list(itertools.combinations(cleaned_val, 2))
-            combinations += [combi]
-        else:
-            pass
-    del authors_parsed
-    combinations = [item for sublist in tqdm(combinations) for item in sublist]
-    combinations = pd.Series(combinations).value_counts(ascending=False)
-    combinations = combinations.to_frame().reset_index()
-    combinations = combinations.rename(columns={0: "score", "index": "authors"})
-    combinations = combinations[combinations["score"] > 1]
-    combinations["tuple_score"] = combinations["score"].apply(lambda x: (x,))
-    combinations["weighted_edges"] = combinations.authors + combinations.tuple_score
-    return combinations["weighted_edges"]
-
-
-def get_top_collab(weighted_edges: List, author: str, sample: int = 3):
-
-    """
-    Return : The top 3 biggest (top sample) collab for the actual author in terms of score
-    This author has published x times with this other one as score
-    """
-    focus = [elem for elem in weighted_edges if author in elem]
-    focus = sorted(focus, key=lambda x: x[2], reverse=True)
-    return focus[:sample]
+# def clean_authors_parsed(authors_parsed_list: List[List[str]]):
+#     res = []
+#     for sublist in authors_parsed_list:
+#         authors = " ".join(sublist).strip().lower()
+#         authors = re.sub(' +', ' ', authors)
+#         res.append(authors)
+#     return res
+#
+#
+# def capitalize(obj: any):
+#     try:
+#         obj = obj.title()
+#         return obj
+#     except AttributeError:
+#         return obj
+#
+#
+# def get_all_authors_edges(data_path: str = "./arxiv_embeddings_300000_completed.json"):
+#
+#     """
+#     1 - Get paper authors name from authors_parsed_column
+#     2 - Compute all combinations (duos) of authors on the paper (each author has published with all others)
+#     3 - Count each duo occurrence as score - (to evolve)
+#     4 - return flattened duos + score list as weighted edge for nx
+#     """
+#
+#     data = pd.read_json(data_path)
+#     authors_parsed = data.authors_parsed
+#     del data
+#     combinations = []
+#
+#     for val in tqdm(authors_parsed):
+#         cleaned_val = clean_authors_parsed(val)
+#         if len(cleaned_val) > 1:
+#             combi = list(itertools.combinations(cleaned_val, 2))
+#             combinations += [combi]
+#         else:
+#             pass
+#     del authors_parsed
+#     combinations = [item for sublist in tqdm(combinations) for item in sublist]
+#     combinations = pd.Series(combinations).value_counts(ascending=False)
+#     combinations = combinations.to_frame().reset_index()
+#     combinations = combinations.rename(columns={0: "score", "index": "authors"})
+#     combinations = combinations[combinations["score"] > 1]
+#     combinations["tuple_score"] = combinations["score"].apply(lambda x: (x,))
+#     combinations["weighted_edges"] = combinations.authors + combinations.tuple_score
+#     return combinations["weighted_edges"]
+#
+#
+# def get_top_collab(weighted_edges: List, author: str, sample: int = 3):
+#
+#     """
+#     Return : The top 3 biggest (top sample) collab for the actual author in terms of score
+#     This author has published x times with this other one as score
+#     """
+#     focus = [elem for elem in weighted_edges if author in elem]
+#     focus = sorted(focus, key=lambda x: x[2], reverse=True)
+#     return focus[:sample]
 
 
 # def get_authors_edges(
