@@ -36,9 +36,9 @@ async def gather_with_concurrency(n, redis_conn, *papers):
         - categories: paper categories the article belongs to
         - month: Month of the last update
         - year: Year of the last update
-        - sch_id: Semantic Scholar's ID corresponding to the p
-        - citations: External data from Semantic Scholar; all papers cited in this paper.
-        - influential_citation_count: ?
+        - sch_id: External data; Semantic Scholar's ID corresponding to the article's doi
+        - citations: External data from Semantic Scholar; sch_id of all articles cited in this article.
+        - influential_citation_count: Number of 'important' articles cited in this article / paper
 
     """
     semaphore = asyncio.Semaphore(n)
@@ -77,6 +77,11 @@ async def gather_with_concurrency(n, redis_conn, *papers):
 
 
 async def load_all_data(redis_conn: Redis, papers: pd.DataFrame):
+    """
+    Loads all the data inside the redis DB, and creates a vector index, to query the vectors efficiently.
+
+    The function was taken from the redis-arXiv repository; 
+    """
     if await redis_conn.dbsize() > 300:
         print("papers already loaded")
     else:
@@ -208,17 +213,6 @@ def create_query(
         .paging(0, number_of_results)\
         .return_fields("id", "paper_pk", "vector_score")\
         .dialect(2)
-
-
-async def process_paper(p):
-    paper = await Paper.get(p.paper_pk)
-    paper = paper.dict()
-    paper['similarity_score'] = 1 - float(p.vector_score)
-    return paper
-
-
-async def papers_from_results(results) -> list:
-    return [await process_paper(p) for p in results.docs]
 
 
 async def find_similar_papers_given_user_text(
