@@ -1,17 +1,17 @@
 import json
-import os
 from tqdm import tqdm
 import pandas as pd
 from dateutil import parser
-from src.vectors import load_raw_data
 from semanticscholar import SemanticScholar
 tqdm.pandas()
+
+
+sch = SemanticScholar(api_key="")
 
 
 # one scholar paper query
 def get_sch_paper(ids: str, write_to: str = "./data/papers_citations/papers_meta.json"):
 
-    sch = SemanticScholar()
     paper = sch.get_paper(f'arXiv:{ids}')
     if paper:
         if paper.citations:
@@ -48,33 +48,6 @@ def get_citations_df(from_: str, write_to: str = "./data/citations_dataframe.jso
     citations_dataframe = pd.DataFrame.from_records(data)
     citations_dataframe.to_json(write_to)
     return citations_dataframe
-
-
-# merge with embeddings after this step
-def merge_raw_data_with_citation(
-        raw_data_path: str,
-        citation_data_path: str,
-        focus_category: str = None,
-        write_to: str = "./data_with_citation.json"
-):
-    """
-    merge citations df with raw_data
-    """
-
-    citations_dataframe = pd.read_json(citation_data_path)
-    raw_data = load_raw_data(raw_data_path)
-    raw_data = pd.DataFrame.from_records(raw_data)
-    citations_dataframe = citations_dataframe.drop("doi", axis=1)
-    citations_dataframe = citations_dataframe.rename(columns={"arxiv_id": "id"})
-
-    if focus_category:
-        raw_data.categories = raw_data.categories.str.lower()
-        raw_data = raw_data[raw_data.categories.str.contains(focus_category)]
-    merged = pd.merge(raw_data, citations_dataframe, on="id", how='inner')
-
-    if write_to:
-        merged.to_json(write_to)
-    return merged
 
 
 # do this after merge with embeddings

@@ -44,6 +44,9 @@ async def gather_with_concurrency(n, redis_conn, *papers):
                     "month": parser.parse(p.update_date).month,
                     "year": parser.parse(p.update_date).year,
                     "vector": np.array(vector, dtype=np.float32).tobytes(),
+                    "sch_id": p.sch_id,
+                    "citations": p.citations,
+                    "influential_citation_count": p.influential_citation_count
                 })
 
     # gather with concurrency
@@ -230,12 +233,19 @@ def try_decode_bytes(data: bytes):
     return decoded
 
 
-def execute_user_query(user_text, k, year_min, year_max, categories=[]):
+def execute_user_query(
+        user_text: str,
+        k: int,
+        year_min: int,
+        year_max: int,
+        categories: List[str] = None
+):
+
     r_conn = get_redis_connexion()
     filters_dict = {
         'year': [str(year) for year in range(year_min, year_max, 1)]
     }
-    if len(categories) > 0:
+    if categories and len(categories) > 0:
         filters_dict['categories'] = categories
 
     q = create_query(
@@ -259,7 +269,3 @@ def execute_user_query_example():
         query=q
     ))
     return result
-
-
-if __name__ == "__main__":
-    pass
