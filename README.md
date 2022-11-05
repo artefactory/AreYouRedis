@@ -29,3 +29,44 @@ To do so, put your requirements in the requirements.in, then run
  ` pip-compile requirements.in`
 
  This will generate automatically the requirements.txt with all the required dependencies.
+
+
+ ### Repo structure
+ .
+├── Dockerfile
+├── LICENSE
+├── Makefile
+├── README.md
+├── app
+│   ├── app.py
+│   ├── config_files
+│   │   └── config.py
+│   ├── features
+│   │   └── topic_evolution.py
+│   ├── main_page.py
+│   ├── style
+│   │   ├── Artefact_logo.png
+│   │   ├── Artefact_small_logo.jpeg
+│   │   ├── Redis_logo.png
+│   │   ├── Saturncloud_logo.webp
+│   │   └── style.css
+│   └── utils
+│       ├── display.py
+│       ├── graph.py
+│       ├── load_css.py
+│       └── widgets.py
+├── entrypoint.sh
+├── notebooks
+│   ├── custom-single-gpu-arxiv-embeddings.ipynb
+│   ├── multi-gpu-arxiv-embeddings.ipynb
+│   └── single-gpu-arxiv-embeddings.ipynb
+├── requirements.in
+├── requirements.txt
+├── setup.py
+└── src
+    ├── categories.py
+    ├── config.py
+    ├── models.py
+    ├── redis_db.py
+    ├── scholar_citations.py
+    └── vectors.py
