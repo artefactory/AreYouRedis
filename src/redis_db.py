@@ -18,6 +18,29 @@ from src.models import Paper
 
 
 async def gather_with_concurrency(n, redis_conn, *papers):
+    """
+    Gathers all arXiv papers, and loads them in the redis DB, using the HSET function.
+    
+    The function was taken from the redis-arXiv repository; it still loads the abstract's embeddding ("vector"), 
+    along with other variables, into the DB.
+    
+    > Several variables, coming from the raw data, were added to the mapping dictionary. 
+        - submitter: Original author of the article (1 person)
+        - authors: Authors, contributors (≥ 1 person)
+        - doi: digital object identifiers, unique ids assigned to each arXiv article
+        - version: Information regarding the article's different versions (was it replaced? when?)
+        - license: Aticle's license
+        - update_date: Date of last article's update
+        - title: title
+        - abstract: text of the abstract
+        - categories: paper categories the article belongs to
+        - month: Month of the last update
+        - year: Year of the last update
+        - sch_id: Semantic Scholar's ID corresponding to the p
+        - citations: External data from Semantic Scholar; all papers cited in this paper.
+        - influential_citation_count: ?
+
+    """
     semaphore = asyncio.Semaphore(n)
 
     async def load_paper(paper):
