@@ -6,16 +6,53 @@ The hackathon - organised by the MLOps Community, in collaboration with Redis an
 
 For more information on it, please visit the [hackathon's welcome page](https://hackathon.redisventures.com/)
 
+## Submission summary
 
-### Running the app
+The submission is a streamlit app, hosted on **Saturn Cloud**, and accessible by [clicking on this link](https://pd-youss-areyouredi-ca51af7d090f4f20ab60bfc3d0e70e18.community.saturnenterprise.io/). 
 
-To install requirements, run the following:
+The app's aim is to: 
+- help people find arXiv articles linked to a subject they are interested in
+- illustrate how the subject of interest has evolved throughout history
 
+It takes as input a user's query - a sentence describing what type of arXiv papers a person is interested in searching.
+
+Using **RedisSearch** capabilities, a set of similar articles, linked to the query, is obtained. 
+
+Three output sections are then presented: 
+
+1. Topic trend & future projection
+2. Topic evolution
+3. Papers overview 
+
+
+
+
+## Setting up the environment
+
+First, clone the repository: 
+```
+git clone https://github.com/artefactory/AreYouRedis.git
+```
+
+Create a virtual environment at the root of your local repository:
+```
+python3 -m virtualenv .venv
+source .venv/bin/activate
+```
+
+Install dependencies:
 ```
 pip install -r requirements.txt
 ```
 
-To launch the app locally,
+Finally, add the database's password as environment variable:
+```
+export REDIS_PASSWORD = '{password}'
+```
+
+## Running the app
+
+To launch the app locally, run the following command:
 ```  
 streamlit run app/app.py
 ```
