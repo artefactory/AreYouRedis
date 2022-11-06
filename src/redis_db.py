@@ -100,6 +100,7 @@ async def load_all_data(redis_conn: Redis, papers: pd.DataFrame):
 
 
 def make_tag_fields():
+    """Tag fields added during the index creation"""
     return [
         TagField('submitter'),
         TagField('authors'),
@@ -113,6 +114,7 @@ def make_tag_fields():
 
 
 def get_redis_connexion():
+    """Redis connection pool, used to connect to the redis DB"""
     redis_connexion = Redis(
         host=config.REDIS_PUBLIC_URL,
         port=config.REDIS_PORT,
@@ -190,6 +192,7 @@ def upload_vectors_to_redis(path: str = "./arxiv_embeddings_300000_completed.jso
 
 
 def format_tags(tag_dict: Dict[str, List[str]]):
+    """Formats tags to query tag fields"""
     tags = ""
     for tag_name, tag_list in tag_dict.items():
         if tag_name in ['submitter', 'authors', 'doi', 'categories',
@@ -205,7 +208,6 @@ def create_query(
     search_type: str = "KNN",
     number_of_results: int = 15,
 ) -> Query:
-
     tags = format_tags(tag_dict) if tag_dict else "*"
     base_query = f'{tags}=>[{search_type} {number_of_results} @vector $vec_param AS vector_score]'
     return Query(base_query)\
@@ -220,6 +222,9 @@ async def find_similar_papers_given_user_text(
         user_text: str,
         query: Query
 ):
+    """
+    Queries the DB using a similarity search, retrieves and processes the results.
+    """
     # Execute query
     # noinspection PyUnresolvedReferences
     results = await redis_conn.ft(config.INDEX_NAME).search(
@@ -243,6 +248,7 @@ async def find_similar_papers_given_user_text(
 
 
 def try_decode_bytes(data: bytes):
+    """Converts bytes result from the query result into strings"""
     try:
         decoded = data.decode()
     except UnicodeDecodeError:
@@ -257,6 +263,7 @@ def execute_user_query(
         year_max: int,
         categories: List[str] = None
 ):
+    """Complete process: connects to the redis db, creates & runs the query."""
 
     r_conn = get_redis_connexion()
     filters_dict = {
@@ -279,10 +286,10 @@ def execute_user_query(
 
 def execute_user_query_example():
     r_conn = get_redis_connexion()
-    q = create_query()
+    q = create_query(number_of_results=1)
     result = asyncio.run(find_similar_papers_given_user_text(
         redis_conn=r_conn,
         user_text="machine learning model observability",
         query=q
     ))
-    return result
+    print(result)
