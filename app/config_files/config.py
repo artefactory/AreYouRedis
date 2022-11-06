@@ -18,17 +18,21 @@ STYLE_FILE_PATH = os.path.join(BASE_PATH, "style", "style.css")
 # Session state variables dict with default values
 default_val_session_state_vars_dict = {
     # --- Widgets' variables to be persisted --- #
-    'selected_page': 'Page example',
     'user_search_query': '',
+    'user_search_query_sub': '',
     'user_search_query_results': [],
-    'k_similar': 30,
+    'k_similar': 50,
     'year_min': 2000,
     'year_max': datetime.datetime.now().year,
     'categories': []
 }
 
 arxiv_categories_mapping = {
-    'Machine learning': "cs\\.lg"
+    "Machine learning": "cs\\.lg",
+    "Artificial Intelligence": "cs\\.ai",
+    "Computation and language": "cs\\.cl",
+    "Computer Vision and Pattern Recognition": "cs\\.cv",
+    "Neural and Evolutionary Computing": "cs\\.ne",
 }
 
 
