@@ -1,39 +1,32 @@
-# Artefact's Boilerplate for  DataScience Python projects 
+# AreYouRedis - Vector Search Engineering Hackathon 
 
-This repository is a boilerplate repository designed to be used when starting a new project to help kickstart things easily.
+This repository is the AreYouRedis team's hackathon submission. 
 
-To create a new repository based on this one please use the "create from a template" feature (see [Github's documentation](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template)).
+The hackathon - organised by the MLOps Community, in collaboration with Redis and Saturn Cloud - focused on Vector search engineering, on the arXiv dataset.
 
-There will be more than you need for your project so feel free to drop what you don't need after you initialized your repo with this one.
-
-## Organisation of the repo
-
-### Folders
-
-    The folder name should be self sufficient, however some extra details:
-    - bin: This is the folder where you store your executable, that could be main python scripts, or bash ones.
-    - lib: this is where you store the main libraries used within your project. 
-    - data: Separated in 3 folder to start: Raw data, intermediate, and processed.
-    - doc: Sphinx template to generate code documentation
-    - references: all the written documentation (functional, features) that is not sphinx generated 
-
-### Requirements
-
-You should always have requirements to your project to ensure reproductibility.
-
-Requirements are often a pain, between the one that you really use, and all the dependencies.
-This repo advise you to use [Pip-tools](https://github.com/jazzband/pip-tools).
-
-To do so, put your requirements in the requirements.in, then run 
-
- ` pip-compile requirements.in`
-
- This will generate automatically the requirements.txt with all the required dependencies.
+For more information on it, please visit the [hackathon's welcome page](https://hackathon.redisventures.com/)
 
 
- ### Repo structure
+### Running the app
+
+To install requirements, run the following:
+
+```
+pip install -r requirements.txt
+```
+
+To launch the app locally,
+```  
+streamlit run app/app.py
+```
+
+The page below should open in your web browser:
+![Darwinian paper searc](Darwinian_paper_explorer.png) 
+
+
+### Repo structure
+```
  .
-├── Dockerfile
 ├── LICENSE
 ├── Makefile
 ├── README.md
@@ -70,3 +63,4 @@ To do so, put your requirements in the requirements.in, then run
     ├── redis_db.py
     ├── scholar_citations.py
     └── vectors.py
+```
