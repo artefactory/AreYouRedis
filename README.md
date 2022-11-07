@@ -35,7 +35,9 @@ Three output sections are then presented:
 
 
 
-## Setting up the environment
+## Running locally
+
+### 1 - Setting up the environment
 
 First, clone the repository: 
 ```
@@ -58,7 +60,7 @@ Finally, add the database's password as environment variable:
 export REDIS_PASSWORD = '{password}'
 ```
 
-## Running the app
+## 2 - Launching the streamlit
 
 To launch the app locally, run the following command:
 ```  
@@ -69,7 +71,34 @@ The page below should open in your web browser:
 ![Darwinian paper searc](Darwinian_paper_explorer.png) 
 
 
-### Repo structure
+## Repository in more details
+
+### 1 - Preprocessing & Loading data inside the Redis DB
+
+Going from the raw arXiv dataset to the data uploaded in redis incured several steps:
+
+- The preprocessing operations, as long as utils function to handle the datasets, can be found in the [vector.py](https://github.com/artefactory/AreYouRedis/blob/master/src/vectors.py) script.
+
+- Functions related to data loading, index creation & similarity search are in [redis_db.py](https://github.com/artefactory/AreYouRedis/blob/master/src/redis_db.py).
+
+- Functions used to gather the citations (see next section) are written in [scholar_citations.py](https://github.com/artefactory/AreYouRedis/blob/master/src/scholar_citations.py).
+
+Those different modules are called in the [custom-single-gpu-arxiv-embeddings.ipynb](https://github.com/artefactory/AreYouRedis/blob/master/notebooks/custom-single-gpu-arxiv-embeddings.ipynb) notebook, where datasets are gathered, cleaned, merged and loaded into Redis.
+
+### 2 - Data enrichment
+
+To better understand the origin & links between different articles, we chose to gather their citations - i.e. all other arXiv papers cited in one article.
+
+For this, we used [Semantic Scholar](https://www.semanticscholar.org/), an online research tool focused on scientific literature.
+We worked specifically with the [python API](https://pypi.org/project/semanticscholar/), to query the citations.
+
+
+### 3 - Topic evolution
+
+TBC
+
+### Repository Structure
+
 ```
  .
 ├── LICENSE
