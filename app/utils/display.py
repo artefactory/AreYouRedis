@@ -48,6 +48,12 @@ def display_section_title(title, type):
     if type == "small":
         st.markdown(color_markdown(title), unsafe_allow_html=True)
 
+    if type == "tab_header":
+        st.markdown(
+            f"<h5 style='text-align: center; color: #49b6c2; '>{title}</h5>",
+            unsafe_allow_html=True
+        )
+
     elif type == "large":
         st.markdown(color_markdown(
             "<div class='atf-red'>" + title + "</div>",
