@@ -28,10 +28,20 @@ Using **RedisSearch** capabilities, a set of similar articles, linked to the que
 Three output sections are then presented: 
 
 1. Topic trend & future projection
+![Topic trend & future projection](data/topic_trend.png) 
+
+
 2. Topic evolution
+
+![Topic evolution](data/topic_evolution.png) 
+
 3. Reading list recommender - based on the papers' similarity scores and node degree in the citation graph
+
+![Recommendations](data/reading_list_recommended.png) 
+
 4. Papers overview
 
+![Papers overview](data/papers_overview.png) 
 
 
 
@@ -68,7 +78,7 @@ streamlit run app/app.py
 ```
 
 The page below should open in your web browser:
-![Darwinian paper searc](Darwinian_paper_explorer.png) 
+![Darwinian paper searc](data/Darwinian_paper_explorer.png) 
 
 
 ## Repository in more details
