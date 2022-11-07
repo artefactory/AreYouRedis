@@ -11,3 +11,5 @@ matplotlib
 python-dateutil
 matplotlib
 plotly
+scipy
+statsmodels

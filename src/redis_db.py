@@ -267,7 +267,7 @@ def execute_user_query(
 
     r_conn = get_redis_connexion()
     filters_dict = {
-        'year': [str(year) for year in range(year_min, year_max, 1)]
+        'year': [str(year) for year in range(year_min, year_max + 1, 1)]
     }
     if categories and len(categories) > 0:
         filters_dict['categories'] = categories
