@@ -184,10 +184,10 @@ def display_topic_trend(query_results):
     fig = go.Figure(
         layout=go.Layout(
             xaxis=dict(
-                title="Papers count"
+                title="Year"
             ),
             yaxis=dict(
-                title="Year"
+                title="Papers count"
             ),
             margin=dict(t=30, b=30, l=1, r=1)
         )
