@@ -11,7 +11,12 @@ sch = SemanticScholar(api_key="")
 
 # one scholar paper query
 def get_sch_paper(ids: str, write_to: str = "./data/papers_citations/papers_meta.json"):
-
+    """
+    Function used to enrich the raw dataset.
+    
+    Queries SemanticScholar, gathering additional information for one paper (based on the id).
+    Writes the result to a json file.
+    """
     paper = sch.get_paper(f'arXiv:{ids}')
     if paper:
         if paper.citations:
@@ -40,6 +45,9 @@ def get_sch_paper(ids: str, write_to: str = "./data/papers_citations/papers_meta
 
 # do this after all api queries
 def get_citations_df(from_: str, write_to: str = "./data/citations_dataframe.json"):
+    """
+    Transforms the enriched dataset into a dataframe.
+    """
     data = []
     with open(from_, "r") as f:
         for jsonObj in f:
@@ -53,7 +61,7 @@ def get_citations_df(from_: str, write_to: str = "./data/citations_dataframe.jso
 # do this after merge with embeddings
 def fill_year_column(data: pd.DataFrame):
     """
-    create year and month columns from Version 1 TAG
+    Creates 'year' and 'month' columns from Version 1 TAG
     """
 
     years = data.versions.progress_apply(lambda x: x[0]['created'])

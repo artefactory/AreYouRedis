@@ -18,6 +18,29 @@ from src.models import Paper
 
 
 async def gather_with_concurrency(n, redis_conn, *papers):
+    """
+    Gathers all arXiv papers, and loads them in the redis DB, using the HSET function.
+    
+    The function was taken from the redis-arXiv repository; it still loads the abstract's embeddding ("vector"), 
+    along with other variables, into the DB.
+    
+    > Several variables, coming from the raw data, were added to the mapping dictionary. 
+        - submitter: Original author of the article (1 person)
+        - authors: Authors, contributors (≥ 1 person)
+        - doi: digital object identifiers, unique ids assigned to each arXiv article
+        - version: Information regarding the article's different versions (was it replaced? when?)
+        - license: Aticle's license
+        - update_date: Date of last article's update
+        - title: title
+        - abstract: text of the abstract
+        - categories: paper categories the article belongs to
+        - month: Month of the last update
+        - year: Year of the last update
+        - sch_id: External data; Semantic Scholar's ID corresponding to the article's doi
+        - citations: External data from Semantic Scholar; sch_id of all articles cited in this article.
+        - influential_citation_count: Number of 'important' articles cited in this article / paper
+
+    """
     semaphore = asyncio.Semaphore(n)
 
     async def load_paper(paper):
@@ -54,6 +77,11 @@ async def gather_with_concurrency(n, redis_conn, *papers):
 
 
 async def load_all_data(redis_conn: Redis, papers: pd.DataFrame):
+    """
+    Loads all the data inside the redis DB, and creates a vector index, to query the vectors efficiently.
+
+    The function was taken from the redis-arXiv repository; 
+    """
     if await redis_conn.dbsize() > 300:
         print("papers already loaded")
     else:
@@ -72,6 +100,7 @@ async def load_all_data(redis_conn: Redis, papers: pd.DataFrame):
 
 
 def make_tag_fields():
+    """Tag fields added during the index creation"""
     return [
         TagField('submitter'),
         TagField('authors'),
@@ -85,6 +114,7 @@ def make_tag_fields():
 
 
 def get_redis_connexion():
+    """Redis connection pool, used to connect to the redis DB"""
     redis_connexion = Redis(
         host=config.REDIS_PUBLIC_URL,
         port=config.REDIS_PORT,
@@ -162,6 +192,7 @@ def upload_vectors_to_redis(path: str = "./arxiv_embeddings_300000_completed.jso
 
 
 def format_tags(tag_dict: Dict[str, List[str]]):
+    """Formats tags to query tag fields"""
     tags = ""
     for tag_name, tag_list in tag_dict.items():
         if tag_name in ['submitter', 'authors', 'doi', 'categories',
@@ -177,7 +208,6 @@ def create_query(
     search_type: str = "KNN",
     number_of_results: int = 15,
 ) -> Query:
-
     tags = format_tags(tag_dict) if tag_dict else "*"
     base_query = f'{tags}=>[{search_type} {number_of_results} @vector $vec_param AS vector_score]'
     return Query(base_query)\
@@ -187,22 +217,14 @@ def create_query(
         .dialect(2)
 
 
-async def process_paper(p):
-    paper = await Paper.get(p.paper_pk)
-    paper = paper.dict()
-    paper['similarity_score'] = 1 - float(p.vector_score)
-    return paper
-
-
-async def papers_from_results(results) -> list:
-    return [await process_paper(p) for p in results.docs]
-
-
 async def find_similar_papers_given_user_text(
         redis_conn: Redis,
         user_text: str,
         query: Query
 ):
+    """
+    Queries the DB using a similarity search, retrieves and processes the results.
+    """
     # Execute query
     # noinspection PyUnresolvedReferences
     results = await redis_conn.ft(config.INDEX_NAME).search(
@@ -226,6 +248,7 @@ async def find_similar_papers_given_user_text(
 
 
 def try_decode_bytes(data: bytes):
+    """Converts bytes result from the query result into strings"""
     try:
         decoded = data.decode()
     except UnicodeDecodeError:
@@ -240,6 +263,7 @@ def execute_user_query(
         year_max: int,
         categories: List[str] = None
 ):
+    """Complete process: connects to the redis db, creates & runs the query."""
 
     r_conn = get_redis_connexion()
     filters_dict = {
@@ -262,10 +286,10 @@ def execute_user_query(
 
 def execute_user_query_example():
     r_conn = get_redis_connexion()
-    q = create_query()
+    q = create_query(number_of_results=1)
     result = asyncio.run(find_similar_papers_given_user_text(
         redis_conn=r_conn,
         user_text="machine learning model observability",
         query=q
     ))
-    return result
+    print(result)
