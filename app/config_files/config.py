@@ -41,7 +41,7 @@ def setup():
     Set up streamlit application
     """
     st.set_page_config(
-        page_title="Paper trends",
+        page_title="Darwinian paper explorer",
         page_icon=SMALL_LOGO_PATH,
         layout="wide"
     )
