@@ -105,7 +105,7 @@ We worked specifically with the [python API](https://pypi.org/project/semanticsc
 
 ### 3 - Topic evolution
 
-Finally, the code used to generate the different graphs (topic evolution, prediction of the trend) can be found in the [topic evolution](https://github.com/artefactory/AreYouRedis/blob/master/app/features/topic_evolution.py) script.
+Finally, the code used to generate the different graphs (topic evolution, prediction of the trend & arc graph) can be found in the [topic evolution](https://github.com/artefactory/AreYouRedis/blob/master/app/features/topic_evolution.py) script.
 
 ### Repository Structure
 
