@@ -8,7 +8,7 @@ For more information on it, please visit the [hackathon's welcome page](https://
 
 ## Submission summary
 
-The submission is a streamlit app, hosted on **Saturn Cloud**, and accessible by [clicking on this link](https://pd-youss-areyouredi-ca51af7d090f4f20ab60bfc3d0e70e18.community.saturnenterprise.io/). 
+The submission is a streamlit app, hosted on **Saturn Cloud**, and accessible by clicking on [this link](https://pd-youss-areyouredi-ca51af7d090f4f20ab60bfc3d0e70e18.community.saturnenterprise.io/). 
 
 The app's vision is to combine vector search and co-citations graph structures in order to:
 
@@ -25,7 +25,7 @@ It takes as input a user's query - a sentence describing what type of arXiv pape
 
 Using **RedisSearch** capabilities, a set of similar articles, linked to the query, is obtained. 
 
-Three output sections are then presented: 
+Four output sections are then presented: 
 
 1. Topic trend & future projection
 ![Topic trend & future projection](data/topic_trend.png) 
@@ -70,7 +70,7 @@ Finally, add the database's password as environment variable:
 export REDIS_PASSWORD = '{password}'
 ```
 
-## 2 - Launching the streamlit
+### 2 - Launching the streamlit
 
 To launch the app locally, run the following command:
 ```  
@@ -105,7 +105,7 @@ We worked specifically with the [python API](https://pypi.org/project/semanticsc
 
 ### 3 - Topic evolution
 
-TBC
+Finally, the code used to generate the different graphs (topic evolution, prediction of the trend) can be found in the [topic evolution](https://github.com/artefactory/AreYouRedis/blob/master/app/features/topic_evolution.py) script.
 
 ### Repository Structure
 
