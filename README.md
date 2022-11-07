@@ -1,6 +1,6 @@
 # AreYouRedis - Vector Search Engineering Hackathon 
 
-This repository is the AreYouRedis team's hackathon submission. 
+This repository contains the code base built by the AreYouRedis team to create the "Darwinian Paper Explorer" app.
 
 The hackathon - organised by the MLOps Community, in collaboration with Redis and Saturn Cloud - focused on Vector search engineering, on the arXiv dataset.
 
@@ -10,11 +10,18 @@ For more information on it, please visit the [hackathon's welcome page](https://
 
 The submission is a streamlit app, hosted on **Saturn Cloud**, and accessible by [clicking on this link](https://pd-youss-areyouredi-ca51af7d090f4f20ab60bfc3d0e70e18.community.saturnenterprise.io/). 
 
-The app's aim is to: 
-- help people find arXiv articles linked to a subject they are interested in
-- illustrate how the subject of interest has evolved throughout history
+The app's vision is to combine vector search and co-citations graph structures in order to:
 
-It takes as input a user's query - a sentence describing what type of arXiv papers a person is interested in searching.
+- Help the user find arXiv articles linked to a subject he's interested in
+
+- Provide the user with a view of a topic's trend, based on the number of related publications throughout time, along with a trend prediction for the next two years
+
+- Illustrate how the subject of interest has evolved throughout history, with an arc diagram highlighting the founding / most influential papers and co-citation relationships between papers
+
+- Recommend a curated reading list, based on a combination of vector similarity score and paper node degree in the citations graph
+
+
+It takes as input a user's query - a sentence describing what type of arXiv papers a person is interested in searching - along with a set of filters on the year, categories, and number of similar papers to be retrieved.
 
 Using **RedisSearch** capabilities, a set of similar articles, linked to the query, is obtained. 
 
@@ -22,7 +29,8 @@ Three output sections are then presented:
 
 1. Topic trend & future projection
 2. Topic evolution
-3. Papers overview 
+3. Reading list recommender - based on the papers' similarity scores and node degree in the citation graph
+4. Papers overview
 
 
 
